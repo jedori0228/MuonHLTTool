@@ -243,9 +243,9 @@ public:
     TurnOnBranches_Event();
     TurnOnBranches_Trigger();
     // TurnOnBranches_GenParticle();
-    // TurnOnBranches_Muon();
-    // TurnOnBranches_HLTMuon();
-    // TurnOnBranches_IterL3Muon();
+     TurnOnBranches_Muon();
+     TurnOnBranches_HLTMuon();
+     TurnOnBranches_IterL3Muon();
   }
 
   void GetEvent(Int_t index)
