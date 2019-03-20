@@ -302,6 +302,8 @@ public:
   TCanvas* c_;
   TString canvasName_;
 
+  TString outputDir_;
+
   TString titleX_;
   TString titleY_;
 
@@ -361,6 +363,10 @@ public:
     canvasName_ = canvasName_;
     isLogX_ = isLogX;
     isLogY_ = isLogY;
+  }
+
+  void SetOutputDir(TString outputDir){
+    outputDir_ = outputDir;
   }
 
   void SetTitle( TString titleX, TString titleY )
@@ -445,6 +451,9 @@ public:
   void Init()
   {
     canvasName_ = "undefined";
+
+    outputDir_ = "./";
+
     isLogX_ = kFALSE;
     isLogY_ = kFALSE;
 
@@ -1153,7 +1162,7 @@ public:
     TF1 *f_line;
     PlotTool::DrawLine(f_line);
 
-    c_->SaveAs(".pdf");
+    c_->SaveAs(outputDir_+"/"+canvasName_+".pdf");
   }
 
   void CalcRatioGraph()
