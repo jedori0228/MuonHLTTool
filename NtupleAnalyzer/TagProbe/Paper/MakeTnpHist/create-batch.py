@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os
+import os,sys
 import argparse
 import datetime
 
@@ -14,7 +14,23 @@ parser.add_argument('--name', dest='name')
 parser.add_argument('--skeleton', dest='skeleton')
 parser.add_argument('--inputFile', dest='inputFile')
 parser.add_argument('-n', dest='njobs', type=int)
+parser.add_argument('--year', dest='year', type=int, default=-1)
 args = parser.parse_args()
+
+## year
+
+if args.year<0:
+
+  tmp_Year = args.year
+  if "2016" in args.inputFile:
+    tmp_Year = 2016
+  elif "2018" in args.inputFile:
+    tmp_Year = 2018
+  else:
+    print "Specify year with --year"
+    sys.exit()
+  args.year = tmp_Year
+  print "Year is not set. Automatically set to "+str(args.year)
 
 ## timestamp
 
@@ -23,7 +39,7 @@ timestamp =  JobStartTime.strftime('%Y_%m_%d_%H%M%S')
 
 ## job directory name
 
-JobDir = timestamp+"__"+args.name
+JobDir = "Run"+str(args.year)+"__"+timestamp+"__"+args.name
 fullJobDir = PWD+'/'+JobDir+'/'
 os.system('mkdir -p '+JobDir+'/outputs/')
 
