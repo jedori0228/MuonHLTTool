@@ -44,7 +44,7 @@ public:
   Bool_t IsPassingProbe()
   {
     Bool_t flag = kFALSE;
-    if( MuonHLT::dRMatching_L2Muon(probe_.vecP, ntuple_, 0., 0.1) )
+    if( MuonHLT::dRMatching_L2Muon(probe_.vecP, ntuple_, 0., 0.3) )
       flag = kTRUE;
 
     return flag;
