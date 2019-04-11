@@ -15,6 +15,8 @@ parser.add_argument('--skeleton', dest='skeleton')
 parser.add_argument('--inputFile', dest='inputFile')
 parser.add_argument('-n', dest='njobs', type=int)
 parser.add_argument('--year', dest='year', type=int, default=-1)
+parser.add_argument('-q', dest='queue', default='fastq')
+parser.add_argument('--args', dest='arguments', default='')
 args = parser.parse_args()
 
 ## year
@@ -39,7 +41,7 @@ timestamp =  JobStartTime.strftime('%Y_%m_%d_%H%M%S')
 
 ## job directory name
 
-JobDir = "Run"+str(args.year)+"__"+timestamp+"__"+args.name
+JobDir = timestamp+"__"+args.name+"__"+"Run"+str(args.year)
 fullJobDir = PWD+'/'+JobDir+'/'
 os.system('mkdir -p '+JobDir+'/outputs/')
 
@@ -106,12 +108,12 @@ for it_FileRange in range(0,len(FileRanges)):
   file_commands = open(this_job_dir+'/commands.sh','w')
   print>>file_commands,'''cd {0}
 echo "Okay, let's run the analysis"
-root -l -b -q run.cxx
-'''.format(this_job_dir)
+root -l -b -q "run.cxx({1})"
+'''.format(this_job_dir,args.arguments)
   file_commands.close()
 
   jobname = str(args.name)+'_'+str(it_FileRange)
-  cmd = 'qsub -V -q fastq -N '+jobname+' -wd '+this_job_dir+' commands.sh '
+  cmd = 'qsub -V -q '+args.queue+' -N '+jobname+' -wd '+this_job_dir+' commands.sh '
 
   cwd = os.getcwd()
   os.chdir(this_job_dir)
