@@ -102,7 +102,8 @@ public:
 
     Double_t deltaR = tag_.vecP.DeltaR(probe_.vecP);
 
-    if( mass_ > 49.9 && mass_ < 130.1 && deltaR > 0.3 )
+    if( mass_ > 70. && mass_ < 130.1 && deltaR > 0.3 )
+    //if( mass_ > 49.9 && mass_ < 130.1 && deltaR > 0.3 )
       flag = kTRUE;
 
     return flag;
