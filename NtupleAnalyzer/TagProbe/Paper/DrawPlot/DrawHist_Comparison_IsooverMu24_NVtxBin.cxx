@@ -1,22 +1,22 @@
 #include <TagProbe/TnPTool.h>
 
-void DrawHistForEachVariable(TString var, Bool_t setZoomIn = kFALSE);
+void DrawHistForEachVariable(TString var, int vtxmin, int vtxmax, Bool_t setZoomIn = kFALSE);
 TGraphAsymmErrors* GetEffGraph( TString fileName, TString var );
 
-void DrawHist_Comparison_IsooverL3() {
-  DrawHistForEachVariable( "Pt" );
-  DrawHistForEachVariable( "Pt", kTRUE );
-  DrawHistForEachVariable( "Eta" );
-  DrawHistForEachVariable( "Phi" );
-  DrawHistForEachVariable( "Vtx" );
+void DrawHist_Comparison_IsooverMu24_NVtxBin(int vtxmin, int vtxmax) {
+  DrawHistForEachVariable( "Pt", vtxmin, vtxmax );
+  DrawHistForEachVariable( "Pt", vtxmin, vtxmax, kTRUE );
+  DrawHistForEachVariable( "Eta", vtxmin, vtxmax );
+  DrawHistForEachVariable( "Phi", vtxmin, vtxmax );
+  DrawHistForEachVariable( "Vtx", vtxmin, vtxmax );
 }
 
-void DrawHistForEachVariable(TString var, Bool_t setZoomIn = kFALSE)
+void DrawHistForEachVariable(TString var, int vtxmin, int vtxmax, Bool_t setZoomIn = kFALSE)
 {
 
   TString filebasedir = "hists/";
-  TString fileName1 = "Run2016__2019_03_21_215820__IsooverL3.root";
-  TString fileName2 = "Run2018__2019_03_21_215837__IsooverL3.root";
+  TString fileName1 = "IsooverMu24NvtxBin"+TString::Itoa(vtxmin,10)+"_"+TString::Itoa(vtxmax,10)+"__Run2016.root";
+  TString fileName2 = "IsooverMu24NvtxBin"+TString::Itoa(vtxmin,10)+"_"+TString::Itoa(vtxmax,10)+"__Run2018.root";
 
   TGraphAsymmErrors* g1 = GetEffGraph(filebasedir+fileName1, var);
   TGraphAsymmErrors* g2 = GetEffGraph(filebasedir+fileName2, var);
@@ -27,12 +27,12 @@ void DrawHistForEachVariable(TString var, Bool_t setZoomIn = kFALSE)
   PlotTool::GraphCanvaswRatio *canvasRatio = new PlotTool::GraphCanvaswRatio(canvasName, 0, 0);
 
   //==== output info
-  TString outdir = "outputs/IsooverL3";
+  TString outdir = "outputs/IsooverMu24_NVtxBin"+TString::Itoa(vtxmin,10)+"_"+TString::Itoa(vtxmax,10);
   gSystem->mkdir(outdir, kTRUE);
   canvasRatio->SetOutputDir(outdir);
 
-  canvasRatio->Register(g1, "Legend 1", kBlack);
-  canvasRatio->Register(g2, "Legend 2", kBlue);
+  canvasRatio->Register(g1, "Run2016H", kBlack);
+  canvasRatio->Register(g2, "Run2018D", kBlue);
 
   TString titleX = "";
   if( var == "Pt" )  titleX = "P_{T}(#mu) [GeV]";
@@ -40,7 +40,7 @@ void DrawHistForEachVariable(TString var, Bool_t setZoomIn = kFALSE)
   if( var == "Phi" ) titleX = "#phi(#mu)";
   if( var == "Vtx" ) titleX = "# vtx";
 
-  canvasRatio->SetTitle( titleX, "Efficiency", "legend2/legend1");
+  canvasRatio->SetTitle( titleX, "Efficiency", "Run2018D/Run2016H");
   canvasRatio->SetLegendPosition( 0.60, 0.32, 0.95, 0.45 );
   // canvasRatio->SetLegendColumn(2);
 
@@ -55,9 +55,10 @@ void DrawHistForEachVariable(TString var, Bool_t setZoomIn = kFALSE)
 
 
   //canvasRatio->RegisterLatex( 0.60, 0.96, "#font[42]{#scale[0.6]{RunXXX (XX pb^{-1})}}");
-  canvasRatio->RegisterLatex( 0.16, 0.91, "#font[42]{#scale[0.6]{IsoMu24/L3}}");
+  canvasRatio->RegisterLatex( 0.16, 0.91, "#font[42]{#scale[0.6]{IsoMu24/Mu24}}");
   if( var != "Pt" )
     canvasRatio->RegisterLatex( 0.16, 0.87, "#font[42]{#scale[0.6]{P_{T} > 26 GeV}}");
+    canvasRatio->RegisterLatex( 0.16, 0.83, "#font[42]{#scale[0.6]{"+TString::Itoa(vtxmin,10)+" #leq Nvtx < "+TString::Itoa(vtxmax,10)+"}}");
 
   canvasRatio->Draw();
 }

@@ -13,11 +13,14 @@ void DrawHist_Comparison_L2overL1() {
 
 void DrawHistForEachVariable(TString var, Bool_t setZoomIn = kFALSE)
 {
-  TString fileName1 = "Run2018__2019_03_21_055748__L2overL1.root";
-  TString fileName2 = "Run2018__2019_03_21_055748__L2overL1.root"; // -- can be replaced by the other root file
 
-  TGraphAsymmErrors* g1 = GetEffGraph(fileName1, var);
-  TGraphAsymmErrors* g2 = GetEffGraph(fileName2, var);
+  TString filebasedir = "hists/";
+
+  TString fileName1 = "L2overL1_NoL2PtCut__Run2016.root";
+  TString fileName2 = "L2overL1_NoL2PtCut__Run2018.root";
+
+  TGraphAsymmErrors* g1 = GetEffGraph(filebasedir+fileName1, var);
+  TGraphAsymmErrors* g2 = GetEffGraph(filebasedir+fileName2, var);
 
   // -- canvas with ratio
   TString canvasName = "c_vs"+var;
@@ -25,12 +28,12 @@ void DrawHistForEachVariable(TString var, Bool_t setZoomIn = kFALSE)
   PlotTool::GraphCanvaswRatio *canvasRatio = new PlotTool::GraphCanvaswRatio(canvasName, 0, 0);
 
   //==== output info
-  TString outdir = "L2overL1";
+  TString outdir = "outputs/L2overL1";
   gSystem->mkdir(outdir, kTRUE);
   canvasRatio->SetOutputDir(outdir);
 
-  canvasRatio->Register(g1, "Legend 1", kBlack);
-  canvasRatio->Register(g2, "Legend 2", kBlue);
+  canvasRatio->Register(g1, "2016", kBlack);
+  canvasRatio->Register(g2, "2018", kBlue);
 
   TString titleX = "";
   if( var == "Pt" )  titleX = "P_{T}(#mu) [GeV]";
@@ -38,14 +41,14 @@ void DrawHistForEachVariable(TString var, Bool_t setZoomIn = kFALSE)
   if( var == "Phi" ) titleX = "#phi(#mu)";
   if( var == "Vtx" ) titleX = "# vtx";
 
-  canvasRatio->SetTitle( titleX, "Efficiency", "legend2/legend1");
+  canvasRatio->SetTitle( titleX, "L2/L1 Efficiency", "2018/2016");
   canvasRatio->SetLegendPosition( 0.60, 0.32, 0.95, 0.45 );
   // canvasRatio->SetLegendColumn(2);
 
   if( var == "Pt" && setZoomIn ) canvasRatio->SetRangeX(24, 120);
 
-  canvasRatio->SetRangeY( 0.8, 1.05 );
-  if( var == "Pt" && !setZoomIn) canvasRatio->SetRangeY( 0, 1.1 );
+  canvasRatio->SetRangeY( 0.90, 1.05 );
+  if( var == "Pt" && !setZoomIn) canvasRatio->SetRangeY( 0.90, 1.05 );
 
   canvasRatio->SetRangeRatio( 0.85, 1.15 );
 
