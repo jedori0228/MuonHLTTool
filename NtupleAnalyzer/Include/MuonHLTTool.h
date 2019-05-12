@@ -110,6 +110,17 @@ Bool_t dRMatching_L1Muon( TLorentzVector vecP_ref, NtupleHandle* ntuple, Double_
   return MuonHLT::dRMatching( vecP_ref, vec_vecP_L1Muon, minDR );
 }
 
+Bool_t dRMatching_L1MuonWithQuality( TLorentzVector vecP_ref, NtupleHandle* ntuple, Double_t minPt, Double_t minDR, Double_t qualCut )
+{
+  vector<MuonHLT::L1Muon> vec_L1Muon = MuonHLT::GetAllL1Muon( ntuple, minPt );
+  vector<TLorentzVector> vec_vecP_L1Muon;
+  for(const auto& L1Muon : vec_L1Muon )
+    if(L1Muon.quality >= qualCut)
+      vec_vecP_L1Muon.push_back( L1Muon.vecP );
+
+  return MuonHLT::dRMatching( vecP_ref, vec_vecP_L1Muon, minDR );
+}
+
 Bool_t dRMatching_L2Muon( TLorentzVector vecP_ref, NtupleHandle* ntuple, Double_t minPt, Double_t minDR )
 {
   vector<MuonHLT::L2Muon> vec_L2Muon = MuonHLT::GetAllL2Muon( ntuple, minPt );
