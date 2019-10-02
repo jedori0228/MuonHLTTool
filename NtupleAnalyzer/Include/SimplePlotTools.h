@@ -986,9 +986,12 @@ class GraphCanvas: public CanvasBase
 public:
   vector<GraphInfo> graphInfos_;
 
+  int Ndivisions;
+
   GraphCanvas()
   {
     // -- member variables are initialized by Init() in CanvasBase()
+    Ndivisions = -1;
   }
 
   GraphCanvas(TString canvasName, Bool_t isLogX = kFALSE, Bool_t isLogY = kFALSE ): GraphCanvas()
@@ -1041,6 +1044,8 @@ public:
       if( setRangeX_ ) g->GetXaxis()->SetLimits( minX_, maxX_ );
       if( setRangeY_ ) g->GetYaxis()->SetRangeUser( minY_, maxY_ );
 
+      if(Ndivisions>0) g->GetYaxis()->SetNdivisions(Ndivisions);
+
       legend->AddEntry( g, legendName );
     }
 
@@ -1048,7 +1053,9 @@ public:
 
     DrawLatexAll();
 
-    c_->SaveAs(".pdf");
+    c_->SaveAs(outputDir_+"/"+canvasName_+".pdf");
+    c_->SaveAs(outputDir_+"/"+canvasName_+".png");
+
   }
 };
 
@@ -1163,6 +1170,7 @@ public:
     PlotTool::DrawLine(f_line);
 
     c_->SaveAs(outputDir_+"/"+canvasName_+".pdf");
+    c_->SaveAs(outputDir_+"/"+canvasName_+".png");
   }
 
   void CalcRatioGraph()
