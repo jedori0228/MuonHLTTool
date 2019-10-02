@@ -47,9 +47,9 @@ void Draw_CompareMu50(){
   319941,
   };
   vector<TString> aliases = {
-  "Mu50 (2016)",
-  "TkMu50 (2016)",
-  "Mu50 (2018)",
+  "Cascade (2016 data)",
+  "Tracker muon (2016 data)",
+  "Iterative (2018 data)",
   };
   vector<TString> Paths = {
     "HLT_Mu50_v5",
@@ -71,7 +71,7 @@ void Draw_CompareMu50(){
   latex_CMSPriliminary.SetNDC();
   latex_Trigger.SetNDC();
   latex_CMSPriliminary.SetTextSize(0.035);
-  latex_Trigger.SetTextSize(0.030);
+  latex_Trigger.SetTextSize(0.035);
 
   TCanvas *c_Path = new TCanvas("c_Path", "", 1000, 800);
   canvas_margin(c_Path);
@@ -80,12 +80,12 @@ void Draw_CompareMu50(){
   TH1D *hist_dummy_Path = new TH1D("hist_dummy_Path", "", 2000, 0., 2000.);
   hist_dummy_Path->GetYaxis()->SetRangeUser(0.000008,2);
   hist_dummy_Path->GetXaxis()->SetRangeUser(0, 500);
-  hist_dummy_Path->GetYaxis()->SetTitle("events normalized to 1/10 ms");
+  hist_dummy_Path->GetYaxis()->SetTitle("events normalized to 1");
   hist_dummy_Path->GetXaxis()->SetTitle("processing time [ms]");
   hist_dummy_Path->Draw("axis");
   hist_axis(hist_dummy_Path);
 
-  TLegend *lg = new TLegend(0.34, 0.75, 0.95, 0.90);
+  TLegend *lg = new TLegend(0.34, 0.70, 0.95, 0.85);
   lg->SetBorderSize(0);
   lg->SetFillStyle(0);
 
@@ -111,6 +111,8 @@ void Draw_CompareMu50(){
     hist->SetLineColor(colors.at(i));
     hist->SetLineStyle(styles.at(i));
     hist->SetLineWidth(2);
+    hist->SetMarkerSize(0);
+    hist->SetMarkerColor(colors.at(i));
     double MeanTiming = hist->GetMean();
     TString str_MeanTiming = Precision(MeanTiming,2);
     cout << MeanTiming << " -> " << str_MeanTiming << endl;
@@ -125,7 +127,7 @@ void Draw_CompareMu50(){
 
   c_Path->cd();
   latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-  //latex_Trigger.DrawLatex(0.03, 0.03, Path);
+  latex_Trigger.DrawLatex(0.365, 0.86, "Mu50");
   lg->Draw();
   c_Path->SaveAs(OutDir+"/Mu50.pdf");
   c_Path->SaveAs(OutDir+"/Mu50.png");

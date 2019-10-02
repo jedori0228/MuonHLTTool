@@ -38,40 +38,40 @@ void Draw_CompareDoubleMu(){
   gStyle->SetOptStat();
   setTDRStyle();
 
-  TString OutDir = "output/IsoTiming/TESTCascade2018/";
+  TString OutDir = "output/IsoTiming/";
   gSystem->mkdir(OutDir,kTRUE);
 
   vector<int> Runs = {
   283407,
-  283407,
+  //283407,
   283407,
   319941,
-  319941,
+  //319941,
   };
   vector<TString> aliases = {
-  "Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ (2016)",
-  "Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ (2016)",
-  "TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ (2016)",
-  "Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 (2018)",
-  "OldMu17_TrkIsoVVL_OldMu8_TrkIsoVVL_DZ_v1 (2018)",
+  "Cascade (2016 data)",
+  //"Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ (2016)",
+  "Tracker muon (2016 data)",
+  "Iterative (2018 data)",
+  "Cascade (2018 data)",
   };
   vector<TString> Paths = {
   "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7",
-  "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6",
+  //"HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6",
   "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3",
   "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v5",
   "HLT_OldMu17_TrkIsoVVL_OldMu8_TrkIsoVVL_DZ_v1",
   };
   vector<Color_t> colors = {
   kBlack,
-  kBlack,
+  //kBlack,
   kBlack,
   kRed,
   kGreen,
   };
   vector<Style_t> styles = {
   1,
-  3,
+  //3,
   5,
   1,
   1,
@@ -81,7 +81,7 @@ void Draw_CompareDoubleMu(){
   latex_CMSPriliminary.SetNDC();
   latex_Trigger.SetNDC();
   latex_CMSPriliminary.SetTextSize(0.035);
-  latex_Trigger.SetTextSize(0.030);
+  latex_Trigger.SetTextSize(0.035);
 
   TCanvas *c_Path = new TCanvas("c_Path", "", 1000, 800);
   canvas_margin(c_Path);
@@ -90,12 +90,12 @@ void Draw_CompareDoubleMu(){
   TH1D *hist_dummy_Path = new TH1D("hist_dummy_Path", "", 2000, 0., 2000.);
   hist_dummy_Path->GetYaxis()->SetRangeUser(0.000008,2);
   hist_dummy_Path->GetXaxis()->SetRangeUser(0, 500);
-  hist_dummy_Path->GetYaxis()->SetTitle("events normalized to 1/10 ms");
+  hist_dummy_Path->GetYaxis()->SetTitle("events normalized to 1");
   hist_dummy_Path->GetXaxis()->SetTitle("processing time [ms]");
   hist_dummy_Path->Draw("axis");
   hist_axis(hist_dummy_Path);
 
-  TLegend *lg = new TLegend(0.34, 0.75, 0.95, 0.90);
+  TLegend *lg = new TLegend(0.34, 0.70, 0.95, 0.85);
   lg->SetBorderSize(0);
   lg->SetFillStyle(0);
 
@@ -110,7 +110,7 @@ void Draw_CompareDoubleMu(){
     TFile *file = new TFile("rootfiles/DQM_V0001_R000"+Run+"__HLT__FastTimerService__All.root");
 
     TString histname = "DQMData/Run "+Run+"/HLT/Run summary/TimerService/Running 1 processes/process TIMING/Paths/"+Path+"_total";
-    if(i>=3) histname = "DQMData/Run "+Run+"/HLT/Run summary/TimerService/process TIMING paths/path "+Path+"/path time_real";
+    if(aliases.at(i).Contains("2018")) histname = "DQMData/Run "+Run+"/HLT/Run summary/TimerService/process TIMING paths/path "+Path+"/path time_real";
 
     cout << histname << endl;
 
@@ -121,6 +121,8 @@ void Draw_CompareDoubleMu(){
     hist->SetLineColor(colors.at(i));
     hist->SetLineStyle(styles.at(i));
     hist->SetLineWidth(2);
+    hist->SetMarkerSize(0);
+    hist->SetMarkerColor(colors.at(i));
     double MeanTiming = hist->GetMean();
     TString str_MeanTiming = Precision(MeanTiming,2);
     cout << MeanTiming << " -> " << str_MeanTiming << endl;
@@ -135,7 +137,8 @@ void Draw_CompareDoubleMu(){
 
   c_Path->cd();
   latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-  //latex_Trigger.DrawLatex(0.03, 0.03, Path);
+
+  latex_Trigger.DrawLatex(0.365, 0.86, "Mu17Mu8");
   lg->Draw();
   c_Path->SaveAs(OutDir+"/DoubleMu.pdf");
   c_Path->SaveAs(OutDir+"/DoubleMu.png");

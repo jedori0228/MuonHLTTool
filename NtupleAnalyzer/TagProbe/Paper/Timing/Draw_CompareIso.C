@@ -47,9 +47,9 @@ void Draw_CompareIso(){
   319941,
   };
   vector<TString> aliases = {
-  "IsoMu24 (2016)",
-  "IsoTkMu24 (2016)",
-  "IsoMu24 (2018)",
+  "Cascade (2016 data)",
+  "Tracker muon (2016 data)",
+  "Iterative (2018 data)",
   };
   vector<TString> Paths = {
     "HLT_IsoMu24_v4",
@@ -71,7 +71,7 @@ void Draw_CompareIso(){
   latex_CMSPriliminary.SetNDC();
   latex_Trigger.SetNDC();
   latex_CMSPriliminary.SetTextSize(0.035);
-  latex_Trigger.SetTextSize(0.030);
+  latex_Trigger.SetTextSize(0.035);
 
   TCanvas *c_Path = new TCanvas("c_Path", "", 1000, 800);
   canvas_margin(c_Path);
@@ -80,12 +80,12 @@ void Draw_CompareIso(){
   TH1D *hist_dummy_Path = new TH1D("hist_dummy_Path", "", 2000, 0., 2000.);
   hist_dummy_Path->GetYaxis()->SetRangeUser(0.000008,2);
   hist_dummy_Path->GetXaxis()->SetRangeUser(0, 500);
-  hist_dummy_Path->GetYaxis()->SetTitle("events normalized to 1/10 ms");
+  hist_dummy_Path->GetYaxis()->SetTitle("events normalized to 1");
   hist_dummy_Path->GetXaxis()->SetTitle("processing time [ms]");
   hist_dummy_Path->Draw("axis");
   hist_axis(hist_dummy_Path);
 
-  TLegend *lg = new TLegend(0.34, 0.75, 0.95, 0.90);
+  TLegend *lg = new TLegend(0.34, 0.70, 0.95, 0.85);
   lg->SetBorderSize(0);
   lg->SetFillStyle(0);
 
@@ -100,7 +100,7 @@ void Draw_CompareIso(){
     TFile *file = new TFile("rootfiles/DQM_V0001_R000"+Run+"__HLT__FastTimerService__All.root");
 
     TString histname = "DQMData/Run "+Run+"/HLT/Run summary/TimerService/Running 1 processes/process TIMING/Paths/"+Path+"_total";
-    if(i==2) histname = "DQMData/Run "+Run+"/HLT/Run summary/TimerService/process TIMING paths/path "+Path+"/path time_real";
+    if(aliases.at(i).Contains("2018")) histname = "DQMData/Run "+Run+"/HLT/Run summary/TimerService/process TIMING paths/path "+Path+"/path time_real";
 
     cout << histname << endl;
 
@@ -111,6 +111,8 @@ void Draw_CompareIso(){
     hist->SetLineColor(colors.at(i));
     hist->SetLineStyle(styles.at(i));
     hist->SetLineWidth(2);
+    hist->SetMarkerSize(0);
+    hist->SetMarkerColor(colors.at(i));
     double MeanTiming = hist->GetMean();
     TString str_MeanTiming = Precision(MeanTiming,2);
     cout << MeanTiming << " -> " << str_MeanTiming << endl;
@@ -125,7 +127,7 @@ void Draw_CompareIso(){
 
   c_Path->cd();
   latex_CMSPriliminary.DrawLatex(0.15, 0.96, "#font[62]{CMS} #font[42]{#it{#scale[0.8]{Preliminary}}}");
-  //latex_Trigger.DrawLatex(0.03, 0.03, Path);
+  latex_Trigger.DrawLatex(0.365, 0.86, "IsoMu24");
   lg->Draw();
   c_Path->SaveAs(OutDir+"/Iso.pdf");
   c_Path->SaveAs(OutDir+"/Iso.png");
