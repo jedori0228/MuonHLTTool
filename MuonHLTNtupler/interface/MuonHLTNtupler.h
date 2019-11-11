@@ -80,6 +80,9 @@ private:
   bool isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx);
 
   edm::EDGetTokenT< edm::View<reco::Muon> >                  t_offlineMuon_;
+
+  edm::EDGetTokenT< std::vector<pat::Muon> >                  t_PatMuon_;
+
   edm::EDGetTokenT< reco::VertexCollection >                 t_offlineVertex_;
   edm::EDGetTokenT< edm::TriggerResults >                    t_triggerResults_;
   edm::EDGetTokenT< trigger::TriggerEvent >                  t_triggerEvent_;
@@ -235,6 +238,9 @@ private:
   int muon_nMatchedStation_[arrSize_];
   int muon_nMatchedRPCLayer_[arrSize_];
   int muon_stationMask_[arrSize_];
+
+  int muon_simType_[arrSize_];
+  int muon_simExtType_[arrSize_];
 
   // -- L3 muon
   int nL3Muon_;

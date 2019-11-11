@@ -58,6 +58,7 @@ using namespace pat;
 
 MuonHLTNtupler::MuonHLTNtupler(const edm::ParameterSet& iConfig):
 t_offlineMuon_       ( consumes< edm::View<reco::Muon> >                  (iConfig.getUntrackedParameter<edm::InputTag>("offlineMuon"       )) ),
+t_PatMuon_ (consumes< std::vector<pat::Muon> > (iConfig.getUntrackedParameter<edm::InputTag>("offlineMuon"))),
 t_offlineVertex_     ( consumes< reco::VertexCollection >                 (iConfig.getUntrackedParameter<edm::InputTag>("offlineVertex"     )) ),
 t_triggerResults_    ( consumes< edm::TriggerResults >                    (iConfig.getUntrackedParameter<edm::InputTag>("triggerResults"    )) ),
 t_triggerEvent_      ( mayConsume< trigger::TriggerEvent >                (iConfig.getUntrackedParameter<edm::InputTag>("triggerEvent"      )) ), // -- not used in miniAOD case
@@ -307,6 +308,9 @@ void MuonHLTNtupler::Init()
     muon_nMatchedStation_[i] = -999;
     muon_nMatchedRPCLayer_[i] = -999;
     muon_stationMask_[i] = -999;
+
+    muon_simType_[i] = -999;
+    muon_simExtType_[i] = -999;
   }
 
   nL3Muon_ = 0;
@@ -536,6 +540,10 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("muon_nMatchedRPCLayer", &muon_nMatchedRPCLayer_, "muon_nMatchedRPCLayer[nMuon]/I");
   ntuple_->Branch("muon_stationMask", &muon_stationMask_, "muon_stationMask[nMuon]/I");
 
+  ntuple_->Branch("muon_simType", &muon_simType_, "muon_simType[nMuon]/I");
+  ntuple_->Branch("muon_simExtType", &muon_simExtType_, "muon_simExtType[nMuon]/I");
+
+
   ntuple_->Branch("nL3Muon", &nL3Muon_, "nL3Muon/I");
   ntuple_->Branch("L3Muon_pt", &L3Muon_pt_, "L3Muon_pt[nL3Muon]/D");
   ntuple_->Branch("L3Muon_eta", &L3Muon_eta_, "L3Muon_eta[nL3Muon]/D");
@@ -626,12 +634,25 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
 {
   edm::Handle< edm::View<reco::Muon> > h_offlineMuon;
 
-  // edm::Handle< edm::View<reco::Muon> > h_offlineMuon;
   if( iEvent.getByToken(t_offlineMuon_, h_offlineMuon) ) // -- only when the dataset has offline muon collection (e.g. AOD) -- //
   {
     edm::Handle<reco::VertexCollection> h_offlineVertex;
     iEvent.getByToken(t_offlineVertex_, h_offlineVertex);
     const reco::Vertex & pv = h_offlineVertex->at(0);
+
+    if(isMiniAOD_){
+
+      edm::Handle< std::vector<pat::Muon> > h_PatMuon;
+      iEvent.getByToken(t_PatMuon_, h_PatMuon);
+      int _nPatMuon = 0;
+      for(auto mu=h_PatMuon->begin(); mu!=h_PatMuon->end(); ++mu)
+      {
+        muon_simType_[_nPatMuon] = mu->simType();
+        muon_simExtType_[_nPatMuon] = mu->simExtType();
+        _nPatMuon++;
+      }
+
+    }
 
     int _nMuon = 0;
     for(auto mu=h_offlineMuon->begin(); mu!=h_offlineMuon->end(); ++mu)
