@@ -311,6 +311,19 @@ void MuonHLTNtupler::Init()
 
     muon_simType_[i] = -999;
     muon_simExtType_[i] = -999;
+    muon_simFlavour_[i] = -999;
+    muon_simHeaviestMotherFlavour_[i] = -999;
+    muon_simPdgId_[i] = -999;
+    muon_simMotherPdgId_[i] = -999;
+    muon_simBX_[i] = -999;
+    muon_simTpEvent_[i] = -999;
+    muon_simProdRho_[i] = -999;
+    muon_simProdZ_[i] = -999;
+    muon_simPt_[i] = -999;
+    muon_simEta_[i] = -999;
+    muon_simPhi_[i] = -999;
+    muon_simMatchQuality_[i] = -999;
+
   }
 
   nL3Muon_ = 0;
@@ -542,6 +555,18 @@ void MuonHLTNtupler::Make_Branch()
 
   ntuple_->Branch("muon_simType", &muon_simType_, "muon_simType[nMuon]/I");
   ntuple_->Branch("muon_simExtType", &muon_simExtType_, "muon_simExtType[nMuon]/I");
+  ntuple_->Branch("muon_simFlavour", &muon_simFlavour_, "muon_simFlavour[nMuon]/I");
+  ntuple_->Branch("muon_simHeaviestMotherFlavour", &muon_simHeaviestMotherFlavour_, "muon_simHeaviestMotherFlavour[nMuon]/I");
+  ntuple_->Branch("muon_simPdgId", &muon_simPdgId_, "muon_simPdgId[nMuon]/I");
+  ntuple_->Branch("muon_simMotherPdgId", &muon_simMotherPdgId_, "muon_simMotherPdgId[nMuon]/I");
+  ntuple_->Branch("muon_simBX", &muon_simBX_, "muon_simBX[nMuon]/I");
+  ntuple_->Branch("muon_simTpEvent", &muon_simTpEvent_, "muon_simTpEvent[nMuon]/I");
+  ntuple_->Branch("muon_simProdRho", &muon_simProdRho_, "muon_simProdRho[nMuon]/I");
+  ntuple_->Branch("muon_simProdZ", &muon_simProdZ_, "muon_simProdZ[nMuon]/I");
+  ntuple_->Branch("muon_simPt", &muon_simPt_, "muon_simPt[nMuon]/I");
+  ntuple_->Branch("muon_simEta", &muon_simEta_, "muon_simEta[nMuon]/I");
+  ntuple_->Branch("muon_simPhi", &muon_simPhi_, "muon_simPhi[nMuon]/I");
+  ntuple_->Branch("muon_simMatchQuality", &muon_simMatchQuality_, "muon_simMatchQuality[nMuon]/I");
 
 
   ntuple_->Branch("nL3Muon", &nL3Muon_, "nL3Muon/I");
@@ -649,6 +674,19 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
       {
         muon_simType_[_nPatMuon] = mu->simType();
         muon_simExtType_[_nPatMuon] = mu->simExtType();
+        muon_simFlavour_[_nPatMuon] = mu->simFlavour();
+        muon_simHeaviestMotherFlavour_[_nPatMuon] = mu->simHeaviestMotherFlavour();
+        muon_simPdgId_[_nPatMuon] = mu->simPdgId();
+        muon_simMotherPdgId_[_nPatMuon] = mu->simMotherPdgId();
+        muon_simBX_[_nPatMuon] = mu->simBX();
+        //muon_simTpEvent_[_nPatMuon] = mu->simTpEvent();
+        muon_simProdRho_[_nPatMuon] = mu->simProdRho();
+        muon_simProdZ_[_nPatMuon] = mu->simProdZ();
+        muon_simPt_[_nPatMuon] = mu->simPt();
+        muon_simEta_[_nPatMuon] = mu->simEta();
+        muon_simPhi_[_nPatMuon] = mu->simPhi();
+        //muon_simMatchQuality_[_nPatMuon] = mu->simMatchQuality();
+
         _nPatMuon++;
       }
 

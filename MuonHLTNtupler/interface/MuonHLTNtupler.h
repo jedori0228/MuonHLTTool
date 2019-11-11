@@ -241,6 +241,18 @@ private:
 
   int muon_simType_[arrSize_];
   int muon_simExtType_[arrSize_];
+  int muon_simFlavour_[arrSize_];
+  int muon_simHeaviestMotherFlavour_[arrSize_];
+  int muon_simPdgId_[arrSize_];
+  int muon_simMotherPdgId_[arrSize_];
+  int muon_simBX_[arrSize_];
+  int muon_simTpEvent_[arrSize_];
+  float muon_simProdRho_[arrSize_];
+  float muon_simProdZ_[arrSize_];
+  float muon_simPt_[arrSize_];
+  float muon_simEta_[arrSize_];
+  float muon_simPhi_[arrSize_];
+  float muon_simMatchQuality_[arrSize_];
 
   // -- L3 muon
   int nL3Muon_;
