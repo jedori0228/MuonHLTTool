@@ -30,4 +30,11 @@ ntuplerBase = cms.EDAnalyzer("MuonHLTNtupler",
 	PUSummaryInfo = cms.untracked.InputTag("addPileupInfo"),
 	genEventInfo = cms.untracked.InputTag("generator"),
 	genParticle = cms.untracked.InputTag("genParticles"),
+
+	# -- miniAOD information
+	isMiniAOD             = cms.bool(False),
+	triggerObject_miniAOD = cms.untracked.InputTag("notUsed"), # -- only used when isMiniAOD == True
+
+	# isMiniAOD             = cms.untracked.bool(True),
+	# triggerObject_miniAOD = cms.untracked.InputTag("slimmedPatTrigger")
 )

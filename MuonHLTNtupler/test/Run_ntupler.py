@@ -2,8 +2,17 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("ntupler")
 
+flag_HLTRerun = False
+flag_miniAOD = True
+
+exampleFile = ""
+if flag_miniAOD:
+  exampleFile = "file:/u/user/kplee/scratch/ROOTFiles_Test/102X/MINIAODSIM_Autumn18_DYJetsToLL_M50.root" # -- @ KNU
+else:
+  exampleFile = "file:/eos/cms/store/data/Run2018A/SingleMuon/AOD/PromptReco-v1/000/316/187/00000/1CCE3B04-E457-E811-A80C-FA163E0178DF.root" # -- @ lxplus
+
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:/eos/cms/store/data/Run2018A/SingleMuon/AOD/PromptReco-v1/000/316/187/00000/1CCE3B04-E457-E811-A80C-FA163E0178DF.root'),
+    fileNames = cms.untracked.vstring(exampleFile),
     secondaryFileNames = cms.untracked.vstring(),
     # lumisToProcess = cms.untracked.VLuminosityBlockRange('258158:1-258158:1786'),
 )
@@ -17,7 +26,6 @@ process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cf
 process.load('Configuration.Geometry.GeometryRecoDB_cff')
 
 # -- ntupler -- #
-flag_HLTRerun = False
 
 if flag_HLTRerun:
   newProcessName = "MYHLT"
@@ -34,6 +42,14 @@ else: # -- without HLT rerun
   process.ntupler.myTriggerResults = cms.untracked.InputTag("TriggerResults",       "",     "HLT")
   process.ntupler.myTriggerEvent   = cms.untracked.InputTag("hltTriggerSummaryAOD", "",     "HLT")
   process.ntupler.lumiScaler       = cms.untracked.InputTag("scalersRawToDigi")
+
+  if flag_miniAOD:
+    process.ntupler.isMiniAOD             = cms.bool(True)
+    process.ntupler.offlineVertex         = cms.untracked.InputTag("offlineSlimmedPrimaryVertices")
+    process.ntupler.offlineMuon           = cms.untracked.InputTag("slimmedMuons")
+    process.ntupler.triggerObject_miniAOD = cms.untracked.InputTag("slimmedPatTrigger")
+    process.ntupler.PUSummaryInfo         = cms.untracked.InputTag("slimmedAddPileupInfo")
+    process.ntupler.genParticle           = cms.untracked.InputTag("prunedGenParticles")
 
   process.TFileService = cms.Service("TFileService",
     fileName = cms.string("ntuple.root"),
