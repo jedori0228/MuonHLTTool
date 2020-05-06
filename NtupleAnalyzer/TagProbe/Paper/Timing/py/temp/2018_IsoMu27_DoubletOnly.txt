@@ -1,0 +1,43 @@
+process.HLTIterL3IOmuonFromL1TkCandidateSequence = cms.Sequence( process.HLTRecopixelvertexingSequenceForIterL3FromL1Muon + process.HLTIterativeTrackingIter023ForIterL3FromL1Muon )
+
+#### process.HLTRecopixelvertexingSequenceForIterL3FromL1Muon
+[hltIterL3FromL1MuonPixelTracksTrackingRegions] in process.HLTL3muonrecoSequence : 0.00369592057541
+[hltIterL3FromL1MuonPixelLayerQuadruplets] in process.HLTL3muonrecoSequence : 0.0194631740451
+[hltIterL3FromL1MuonPixelTracksHitDoublets] in process.HLTL3muonrecoSequence : 0.076011352241
+[hltIterL3FromL1MuonPixelTracksHitQuadruplets] in process.HLTL3muonrecoSequence : 0.0233777221292
+[hltIterL3FromL1MuonPixelTracks] in process.HLTL3muonrecoSequence : 0.00191578757949
+[hltIterL3FromL1MuonPixelVertices] in process.HLTL3muonrecoSequence : 0.00397664261982
+[hltIterL3FromL1MuonTrimmedPixelVertices] in process.HLTL3muonrecoSequence : 0.000413605273934
+
+#### process.HLTIterativeTrackingIter023ForIterL3FromL1Muon
+[hltIter0IterL3FromL1MuonPixelSeedsFromPixelTracks] in process.HLTL3muonrecoSequence : 0.00316221639514
+[hltIter0IterL3FromL1MuonCkfTrackCandidates] in process.HLTL3muonrecoSequence : 0.0747006461024
+[hltIter0IterL3FromL1MuonCtfWithMaterialTracks] in process.HLTL3muonrecoSequence : 0.0169261004776
+[hltIter0IterL3FromL1MuonTrackCutClassifier] in process.HLTL3muonrecoSequence : 0.000762632698752
+[hltIter0IterL3FromL1MuonTrackSelectionHighPurity] in process.HLTL3muonrecoSequence : 0.0014977240935
+[hltIter2IterL3FromL1MuonClustersRefRemoval] in process.HLTL3muonrecoSequence : 0.00123895995785
+[hltIter2IterL3FromL1MuonMaskedMeasurementTrackerEvent] in process.HLTL3muonrecoSequence : 0.00615907972679
+[hltIter2IterL3FromL1MuonPixelLayerTriplets] in process.HLTL3muonrecoSequence : 0.0439729988575
+[hltIter2IterL3FromL1MuonPixelClusterCheck] in process.HLTL3muonrecoSequence : 0.000368077453459
+[hltIter2IterL3FromL1MuonPixelHitDoublets] in process.HLTL3muonrecoSequence : 0.08346568048
+[hltIter2IterL3FromL1MuonPixelHitTriplets] in process.HLTL3muonrecoSequence : 0.0272459443659
+[hltIter2IterL3FromL1MuonPixelSeeds] in process.HLTL3muonrecoSequence : 0.0522565282881
+[hltIter2IterL3FromL1MuonCkfTrackCandidates] in process.HLTL3muonrecoSequence : 0.850666999817
+[hltIter2IterL3FromL1MuonCtfWithMaterialTracks] in process.HLTL3muonrecoSequence : 0.11929346621
+[hltIter2IterL3FromL1MuonTrackCutClassifier] in process.HLTL3muonrecoSequence : 0.00137396319769
+[hltIter2IterL3FromL1MuonTrackSelectionHighPurity] in process.HLTL3muonrecoSequence : 0.00355824851431
+[hltIter2IterL3FromL1MuonMerged] in process.HLTL3muonrecoSequence : 0.00449278950691
+[hltIter3IterL3FromL1MuonClustersRefRemoval] in process.HLTL3muonrecoSequence : 0.00728282891214
+[hltIter3IterL3FromL1MuonMaskedMeasurementTrackerEvent] in process.HLTL3muonrecoSequence : 0.0063286065124
+[hltIter3IterL3FromL1MuonPixelLayerPairs] in process.HLTL3muonrecoSequence : 0.0461599007249
+[hltIter3IterL3FromL1MuonTrackingRegions] in process.HLTL3muonrecoSequence : 0.00365907442756
+[hltIter3IterL3FromL1MuonPixelClusterCheck] in process.HLTL3muonrecoSequence : 0.000386084459024
+[hltIter3IterL3FromL1MuonPixelHitDoublets] in process.HLTL3muonrecoSequence : 0.0537719428539
+[hltIter3IterL3FromL1MuonPixelSeeds] in process.HLTL3muonrecoSequence : 0.127889916301
+[hltIter3IterL3FromL1MuonCkfTrackCandidates] in process.HLTL3muonrecoSequence : 1.93459546566
+[hltIter3IterL3FromL1MuonCtfWithMaterialTracks] in process.HLTL3muonrecoSequence : 0.0523088388145
+[hltIter3IterL3FromL1MuonTrackCutClassifier] in process.HLTL3muonrecoSequence : 0.00112260517199
+[hltIter3IterL3FromL1MuonTrackSelectionHighPurity] in process.HLTL3muonrecoSequence : 0.00225239736028
+[hltIter3IterL3FromL1MuonMerged] in process.HLTL3muonrecoSequence : 0.00579577172175
+
+

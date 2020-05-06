@@ -1,0 +1,8 @@
+process.HLTBeginSequence + 
+process.hltL1sV0SingleMu22IorSingleMu25 + 
+process.hltPreTkMu50 + 
+process.hltL1fL1sMu22Or25L1Filtered0 + 
+process.HLTMuonLocalRecoSequence + 
+process.HLTHighPt50TrackerMuonSequence + 
+process.hltL3fL1sMu25f0TkFiltered50Q + 
+process.HLTEndSequence

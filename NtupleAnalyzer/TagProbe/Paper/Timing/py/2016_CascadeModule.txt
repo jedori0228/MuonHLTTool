@@ -1,0 +1,94 @@
+hltTriggerType	0.000895802979358
+hltGtStage2Digis	0.281240522861
+hltCaloStage2Digis	1.83181881905
+hltGmtStage2Digis	0.0757072940469
+hltGtStage2ObjectMap	0.914219260216
+hltScalersRawToDigi	0.0342543423176
+hltOnlineBeamSpot	0.00971207022667
+hltL1sDoubleMu114IorDoubleMu125IorDoubleMu136	0.0138950096443
+hltPreMu17TrkIsoVVLMu8TrkIsoVVLDZ	1.54898698383e-05
+hltL1fL1sDoubleMu114ORDoubleMu125L1Filtered0	0.000330656563165
+hltMuonDTDigis	0.0174499694258
+hltDt1DRecHits	0.0251593682915
+hltDt4DSegments	0.0426337793469
+hltMuonCSCDigis	0.0884907096624
+hltCsc2DRecHits	0.0568419471383
+hltCscSegments	0.0234613735229
+hltMuonRPCDigis	0.00409897603095
+hltRpcRecHits	0.0202922839671
+hltL2OfflineMuonSeeds	0.0118915792555
+hltL2MuonSeeds	0.0127166239545
+hltL2Muons	0.213624581695
+hltL2MuonCandidates	0.000583320390433
+hltL2pfL1sDoubleMu114ORDoubleMu125L1f0L2PreFiltered0	0.000640926882625
+hltL2fL1sDoubleMu114L1f0L2Filtered10OneMu	0.000253833160968
+hltSiPixelDigis	0.0256824363023
+hltSiPixelClusters	0.0555767677724
+hltSiPixelClustersCache	0.0206100400537
+hltSiPixelRecHits	0.0585037507117
+hltSiStripExcludedFEDListProducer	0.000166005615029
+hltSiStripRawToClustersFacility	0.0013655484654
+hltSiStripClusters	0.00154892669525
+hltL3TrajSeedOIState	0.00946281570941
+hltL3TrackCandidateFromL2OIState	0.0363822393119
+hltL3TkTracksFromL2OIState	0.00304118543863
+hltL3MuonsOIState	0.0161330737174
+hltL3TrajSeedOIHit	0.00228214031085
+hltL3TrackCandidateFromL2OIHit	0.0159203838557
+hltL3TkTracksFromL2OIHit	0.00128173572011
+hltL3MuonsOIHit	0.00248752254993
+hltL3TkFromL2OICombination	8.39354179334e-05
+hltPixelLayerTriplets	0.00157777778804
+hltPixelLayerPairs	0.00122393690981
+hltMixedLayerPairs	0.00123073696159
+hltL3TrajSeedIOHit	0.0176400989294
+hltL3TrackCandidateFromL2IOHit	0.0913590043783
+hltL3TkTracksFromL2IOHit	0.00410256814212
+hltL3MuonsIOHit	0.00772285042331
+hltL3TrajectorySeed	0.000169877210283
+hltL3TrackCandidateFromL2	0.000155931877089
+hltL3TkTracksMergeStep1	0.000621121667791
+hltL3TkTracksFromL2	0.000590262236074
+hltL3MuonsLinksCombination	7.21181786503e-05
+hltL3Muons	5.68338327867e-05
+hltL3MuonCandidates	0.000136683418532
+hltL3pfL1sDoubleMu114ORDoubleMu125L1f0L2pf0L3PreFiltered8	0.000170789222466
+hltL3fL1sDoubleMu114L1f0L2f10OneMuL3Filtered17	1.56871137733e-05
+hltL3MuonVertex	1.33678959173e-05
+(dup.) (57)	0.0
+(dup.) (58)	0.0
+(dup.) (59)	0.0
+(dup.) (60)	0.0
+(dup.) (61)	0.0
+hltPixelTracksL3Muon	0.00413425266743
+hltPixelVerticesL3Muon	5.74181249249e-05
+(dup.) (64)	0.0
+(dup.) (65)	0.0
+(dup.) (66)	0.0
+hltPixelTracksForSeedsL3Muon	0.000609286478721
+hltIter0L3MuonPixelSeedsFromPixelTracks	6.48335699225e-05
+hltIter0L3MuonCkfTrackCandidates	0.000576593272854
+hltIter0L3MuonCtfWithMaterialTracks	0.000364153354894
+hltIter0L3MuonTrackSelectionHighPurity	5.21574256709e-05
+hltIter1L3MuonClustersRefRemoval	1.02798258013e-05
+hltIter1L3MuonMaskedMeasurementTrackerEvent	2.54174174188e-05
+hltIter1L3MuonPixelLayerTriplets	0.000154352979735
+hltIter1L3MuonPixelSeeds	0.000886419264134
+hltIter1L3MuonCkfTrackCandidates	0.00432825367898
+hltIter1L3MuonCtfWithMaterialTracks	0.00148870551493
+hltIter1L3MuonTrackSelectionHighPurityLoose	6.78262513247e-05
+hltIter1L3MuonTrackSelectionHighPurityTight	5.07391669089e-05
+hltIter1L3MuonTrackSelectionHighPurity	5.05136449647e-05
+hltIter1L3MuonMerged	4.85111122543e-05
+hltIter2L3MuonClustersRefRemoval	2.97629430861e-05
+hltIter2L3MuonMaskedMeasurementTrackerEvent	2.47955813393e-05
+hltIter2L3MuonPixelLayerPairs	0.000156181340571
+hltIter2L3MuonPixelSeeds	0.00273159774952
+hltIter2L3MuonCkfTrackCandidates	0.021534813568
+hltIter2L3MuonCtfWithMaterialTracks	0.00530095119029
+hltIter2L3MuonTrackSelectionHighPurity	0.000128724670503
+hltIter2L3MuonMerged	7.7161937952e-05
+hltL3MuonRelTrkIsolationVVL	3.2464547985e-05
+hltDiMuonGlb17Glb8RelTrkIsoFiltered0p4	1.08553740574e-05
+hltDiMuonGlb17Glb8RelTrkIsoFiltered0p4DzFiltered0p2	4.19527304985e-06
+hltBoolEnd	1.36043894372e-07

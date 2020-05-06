@@ -1,0 +1,10 @@
+process.HLTBeginSequence + 
+process.hltL1sSingleMu22or25 + 
+process.hltPreMu50 + 
+process.hltL1fL1sMu22or25L1Filtered0 + 
+process.HLTL2muonrecoSequence + 
+process.hltL2fL1sMu22or25L1f0L2Filtered10Q + 
+process.HLTL3muonrecoSequence + 
+process.hltL1fForIterL3L1fL1sMu22or25L1Filtered0 + 
+process.hltL3fL1sMu22Or25L1f0L2f10QL3Filtered50Q + 
+process.HLTEndSequence

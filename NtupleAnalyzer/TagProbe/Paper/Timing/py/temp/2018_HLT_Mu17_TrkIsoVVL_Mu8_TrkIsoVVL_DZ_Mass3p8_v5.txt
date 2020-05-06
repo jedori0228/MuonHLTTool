@@ -1,0 +1,16 @@
+process.HLTBeginSequence + 
+process.hltL1sDoubleMu125to157 + 
+process.hltPreMu17TrkIsoVVLMu8TrkIsoVVLDZMass3p8 + 
+process.hltL1fL1sDoubleMu155L1Filtered0 + 
+process.HLTL2muonrecoSequence + 
+process.hltL2pfL1sDoubleMu155L1f0L2PreFiltered0 + 
+process.hltL2fL1sDoubleMu155L1f0L2Filtered10OneMu + 
+process.HLTL3muonrecoSequence + 
+process.hltL1fForIterL3L1fL1sDoubleMu155L1Filtered0 + 
+process.hltL3fL1DoubleMu155fPreFiltered8 + 
+process.hltL3fL1DoubleMu155fFiltered17 + 
+process.HLTL3muontrkisovvlSequence + 
+process.hltDiMuon178RelTrkIsoFiltered0p4 + 
+process.hltDiMuon178RelTrkIsoFiltered0p4DzFiltered0p2 + 
+process.hltDiMuon178Mass3p8Filtered + 
+process.HLTEndSequence

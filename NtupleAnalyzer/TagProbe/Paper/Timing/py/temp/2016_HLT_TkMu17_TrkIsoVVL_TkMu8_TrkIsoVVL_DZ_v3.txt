@@ -1,0 +1,13 @@
+process.HLTBeginSequence +
+process.hltL1sDoubleMu114IorDoubleMu125IorDoubleMu136 + 
+process.hltPreTkMu17TrkIsoVVLTkMu8TrkIsoVVLDZ + 
+process.hltL1fL1sDoubleMu114L1OneMuFiltered0 + 
+process.HLTMuonLocalRecoSequence + 
+process.HLTHighPt17TrackerMuonSequence + 
+process.hltL3fL1sDoubleMu114TkFiltered17Q + 
+process.HLTDiTrackerMuonSequence + 
+process.hltDiTkMuonTkFiltered17TkFiltered8 + 
+process.HLTGlbditrkmuontrkisovvlSequence + 
+process.hltDiMuonTrk17Trk8RelTrkIsoFiltered0p4 + 
+process.hltDiMuonTrk17Trk8RelTrkIsoFiltered0p4DzFiltered0p2 + 
+process.HLTEndSequence
