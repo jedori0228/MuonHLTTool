@@ -18,6 +18,7 @@
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 #include "DataFormats/HLTReco/interface/TriggerObject.h"
+#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
 #include "DataFormats/L1Trigger/interface/Muon.h"
 #include "DataFormats/Luminosity/interface/LumiDetails.h"
 #include "DataFormats/Math/interface/deltaR.h"
@@ -53,15 +54,16 @@
 using namespace std;
 using namespace reco;
 using namespace edm;
-
+using namespace pat;
 
 MuonHLTNtupler::MuonHLTNtupler(const edm::ParameterSet& iConfig):
-t_offlineMuon_       ( consumes< std::vector<reco::Muon> >                (iConfig.getUntrackedParameter<edm::InputTag>("offlineMuon"       )) ),
+t_offlineMuon_       ( consumes< edm::View<reco::Muon> >                  (iConfig.getUntrackedParameter<edm::InputTag>("offlineMuon"       )) ),
+t_PatMuon_ (consumes< std::vector<pat::Muon> > (iConfig.getUntrackedParameter<edm::InputTag>("offlineMuon"))),
 t_offlineVertex_     ( consumes< reco::VertexCollection >                 (iConfig.getUntrackedParameter<edm::InputTag>("offlineVertex"     )) ),
 t_triggerResults_    ( consumes< edm::TriggerResults >                    (iConfig.getUntrackedParameter<edm::InputTag>("triggerResults"    )) ),
-t_triggerEvent_      ( consumes< trigger::TriggerEvent >                  (iConfig.getUntrackedParameter<edm::InputTag>("triggerEvent"      )) ),
+t_triggerEvent_      ( mayConsume< trigger::TriggerEvent >                (iConfig.getUntrackedParameter<edm::InputTag>("triggerEvent"      )) ), // -- not used in miniAOD case
 t_myTriggerResults_  ( consumes< edm::TriggerResults >                    (iConfig.getUntrackedParameter<edm::InputTag>("myTriggerResults"  )) ),
-t_myTriggerEvent_    ( consumes< trigger::TriggerEvent >                  (iConfig.getUntrackedParameter<edm::InputTag>("myTriggerEvent"    )) ),
+t_myTriggerEvent_    ( mayConsume< trigger::TriggerEvent >                (iConfig.getUntrackedParameter<edm::InputTag>("myTriggerEvent"    )) ), // -- not used in miniAOD case
 t_L3Muon_            ( consumes< reco::RecoChargedCandidateCollection >   (iConfig.getUntrackedParameter<edm::InputTag>("L3Muon"            )) ),
 t_L2Muon_            ( consumes< reco::RecoChargedCandidateCollection >   (iConfig.getUntrackedParameter<edm::InputTag>("L2Muon"            )) ),
 t_L1Muon_            ( consumes< l1t::MuonBxCollection  >                 (iConfig.getUntrackedParameter<edm::InputTag>("L1Muon"            )) ),
@@ -77,9 +79,12 @@ t_lumiScaler_        ( consumes< LumiScalersCollection >                  (iConf
 t_offlineLumiScaler_ ( consumes< LumiScalersCollection >                  (iConfig.getUntrackedParameter<edm::InputTag>("offlineLumiScaler" )) ),
 t_PUSummaryInfo_     ( consumes< std::vector<PileupSummaryInfo> >         (iConfig.getUntrackedParameter<edm::InputTag>("PUSummaryInfo"     )) ),
 t_genEventInfo_      ( consumes< GenEventInfoProduct >                    (iConfig.getUntrackedParameter<edm::InputTag>("genEventInfo"      )) ),
-t_genParticle_       ( consumes< reco::GenParticleCollection >            (iConfig.getUntrackedParameter<edm::InputTag>("genParticle"       )) )
-{
+t_genParticle_       ( consumes< reco::GenParticleCollection >            (iConfig.getUntrackedParameter<edm::InputTag>("genParticle"       )) ),
 
+isMiniAOD_               ( iConfig.existsAs<bool>("isMiniAOD") ? iConfig.getParameter<bool>("isMiniAOD") : false),
+t_triggerObject_miniAOD_ ( consumes< std::vector<pat::TriggerObjectStandAlone> > (iConfig.getUntrackedParameter<edm::InputTag>("triggerObject_miniAOD")))
+{
+  cout << "isMiniAOD_ = " << isMiniAOD_ << endl;
 }
 
 void MuonHLTNtupler::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup)
@@ -303,6 +308,22 @@ void MuonHLTNtupler::Init()
     muon_nMatchedStation_[i] = -999;
     muon_nMatchedRPCLayer_[i] = -999;
     muon_stationMask_[i] = -999;
+
+    muon_simType_[i] = -999;
+    muon_simExtType_[i] = -999;
+    muon_simFlavour_[i] = -999;
+    muon_simHeaviestMotherFlavour_[i] = -999;
+    muon_simPdgId_[i] = -999;
+    muon_simMotherPdgId_[i] = -999;
+    muon_simBX_[i] = -999;
+    muon_simTpEvent_[i] = -999;
+    muon_simProdRho_[i] = -999;
+    muon_simProdZ_[i] = -999;
+    muon_simPt_[i] = -999;
+    muon_simEta_[i] = -999;
+    muon_simPhi_[i] = -999;
+    muon_simMatchQuality_[i] = -999;
+
   }
 
   nL3Muon_ = 0;
@@ -532,6 +553,22 @@ void MuonHLTNtupler::Make_Branch()
   ntuple_->Branch("muon_nMatchedRPCLayer", &muon_nMatchedRPCLayer_, "muon_nMatchedRPCLayer[nMuon]/I");
   ntuple_->Branch("muon_stationMask", &muon_stationMask_, "muon_stationMask[nMuon]/I");
 
+  ntuple_->Branch("muon_simType", &muon_simType_, "muon_simType[nMuon]/I");
+  ntuple_->Branch("muon_simExtType", &muon_simExtType_, "muon_simExtType[nMuon]/I");
+  ntuple_->Branch("muon_simFlavour", &muon_simFlavour_, "muon_simFlavour[nMuon]/I");
+  ntuple_->Branch("muon_simHeaviestMotherFlavour", &muon_simHeaviestMotherFlavour_, "muon_simHeaviestMotherFlavour[nMuon]/I");
+  ntuple_->Branch("muon_simPdgId", &muon_simPdgId_, "muon_simPdgId[nMuon]/I");
+  ntuple_->Branch("muon_simMotherPdgId", &muon_simMotherPdgId_, "muon_simMotherPdgId[nMuon]/I");
+  ntuple_->Branch("muon_simBX", &muon_simBX_, "muon_simBX[nMuon]/I");
+  ntuple_->Branch("muon_simTpEvent", &muon_simTpEvent_, "muon_simTpEvent[nMuon]/I");
+  ntuple_->Branch("muon_simProdRho", &muon_simProdRho_, "muon_simProdRho[nMuon]/I");
+  ntuple_->Branch("muon_simProdZ", &muon_simProdZ_, "muon_simProdZ[nMuon]/I");
+  ntuple_->Branch("muon_simPt", &muon_simPt_, "muon_simPt[nMuon]/I");
+  ntuple_->Branch("muon_simEta", &muon_simEta_, "muon_simEta[nMuon]/I");
+  ntuple_->Branch("muon_simPhi", &muon_simPhi_, "muon_simPhi[nMuon]/I");
+  ntuple_->Branch("muon_simMatchQuality", &muon_simMatchQuality_, "muon_simMatchQuality[nMuon]/I");
+
+
   ntuple_->Branch("nL3Muon", &nL3Muon_, "nL3Muon/I");
   ntuple_->Branch("L3Muon_pt", &L3Muon_pt_, "L3Muon_pt[nL3Muon]/D");
   ntuple_->Branch("L3Muon_eta", &L3Muon_eta_, "L3Muon_eta[nL3Muon]/D");
@@ -620,16 +657,43 @@ void MuonHLTNtupler::Make_Branch()
 
 void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
 {
-  edm::Handle<std::vector<reco::Muon> > h_offlineMuon;
-  // edm::Handle< edm::View<reco::Muon> > h_offlineMuon;
+  edm::Handle< edm::View<reco::Muon> > h_offlineMuon;
+
   if( iEvent.getByToken(t_offlineMuon_, h_offlineMuon) ) // -- only when the dataset has offline muon collection (e.g. AOD) -- //
   {
     edm::Handle<reco::VertexCollection> h_offlineVertex;
     iEvent.getByToken(t_offlineVertex_, h_offlineVertex);
     const reco::Vertex & pv = h_offlineVertex->at(0);
 
+    if(isMiniAOD_){
+
+      edm::Handle< std::vector<pat::Muon> > h_PatMuon;
+      iEvent.getByToken(t_PatMuon_, h_PatMuon);
+      int _nPatMuon = 0;
+      for(auto mu=h_PatMuon->begin(); mu!=h_PatMuon->end(); ++mu)
+      {
+        muon_simType_[_nPatMuon] = mu->simType();
+        muon_simExtType_[_nPatMuon] = mu->simExtType();
+        muon_simFlavour_[_nPatMuon] = mu->simFlavour();
+        muon_simHeaviestMotherFlavour_[_nPatMuon] = mu->simHeaviestMotherFlavour();
+        muon_simPdgId_[_nPatMuon] = mu->simPdgId();
+        muon_simMotherPdgId_[_nPatMuon] = mu->simMotherPdgId();
+        muon_simBX_[_nPatMuon] = mu->simBX();
+        //muon_simTpEvent_[_nPatMuon] = mu->simTpEvent();
+        muon_simProdRho_[_nPatMuon] = mu->simProdRho();
+        muon_simProdZ_[_nPatMuon] = mu->simProdZ();
+        muon_simPt_[_nPatMuon] = mu->simPt();
+        muon_simEta_[_nPatMuon] = mu->simEta();
+        muon_simPhi_[_nPatMuon] = mu->simPhi();
+        //muon_simMatchQuality_[_nPatMuon] = mu->simMatchQuality();
+
+        _nPatMuon++;
+      }
+
+    }
+
     int _nMuon = 0;
-    for(std::vector<reco::Muon>::const_iterator mu=h_offlineMuon->begin(); mu!=h_offlineMuon->end(); ++mu)
+    for(auto mu=h_offlineMuon->begin(); mu!=h_offlineMuon->end(); ++mu)
     {
       muon_pt_[_nMuon]  = mu->pt();
       muon_eta_[_nMuon] = mu->eta();
@@ -637,8 +701,8 @@ void MuonHLTNtupler::Fill_Muon(const edm::Event &iEvent)
       muon_px_[_nMuon]  = mu->px();
       muon_py_[_nMuon]  = mu->py();
       muon_pz_[_nMuon]  = mu->pz();
-      // muon_dB_[_nMuon] = mu->dB(); // -- dB is only availabe in pat::Muon -- //
       muon_charge_[_nMuon] = mu->charge();
+      // if( isMiniAOD_ ) muon_dB_[_nMuon] = mu->dB(); // -- dB is only availabe in pat::Muon -- //
 
       if( mu->isGlobalMuon() ) muon_isGLB_[_nMuon] = 1;
       if( mu->isStandAloneMuon() ) muon_isSTA_[_nMuon] = 1;
@@ -722,16 +786,8 @@ void MuonHLTNtupler::Fill_HLT(const edm::Event &iEvent, bool isMYHLT)
   edm::Handle<edm::TriggerResults>  h_triggerResults;
   edm::Handle<trigger::TriggerEvent> h_triggerEvent;
 
-  if( isMYHLT )
-  {
-    iEvent.getByToken(t_myTriggerResults_, h_triggerResults);
-    iEvent.getByToken(t_myTriggerEvent_,   h_triggerEvent);
-  }
-  else
-  {
-    iEvent.getByToken(t_triggerResults_, h_triggerResults);
-    iEvent.getByToken(t_triggerEvent_,   h_triggerEvent);
-  }
+  if( isMYHLT ) iEvent.getByToken(t_myTriggerResults_, h_triggerResults);
+  else          iEvent.getByToken(t_triggerResults_,   h_triggerResults);
 
   edm::TriggerNames triggerNames = iEvent.triggerNames(*h_triggerResults);
 
@@ -751,38 +807,103 @@ void MuonHLTNtupler::Fill_HLT(const edm::Event &iEvent, bool isMYHLT)
 
   } // -- end of iteration over all trigger names -- //
 
-  const trigger::size_type nFilter(h_triggerEvent->sizeFilters());
-  for( trigger::size_type i_filter=0; i_filter<nFilter; i_filter++)
+  if( !isMiniAOD_ ) // -- AOD case
   {
-    std::string filterName = h_triggerEvent->filterTag(i_filter).encode();
+    if( isMYHLT ) iEvent.getByToken(t_myTriggerEvent_, h_triggerEvent);
+    else          iEvent.getByToken(t_triggerEvent_,   h_triggerEvent);
 
-    if( SavedFilterCondition(filterName) )
+    const trigger::size_type nFilter(h_triggerEvent->sizeFilters());
+    for( trigger::size_type i_filter=0; i_filter<nFilter; i_filter++)
     {
-      trigger::Keys objectKeys = h_triggerEvent->filterKeys(i_filter);
-      const trigger::TriggerObjectCollection& triggerObjects(h_triggerEvent->getObjects());
+      std::string filterName = h_triggerEvent->filterTag(i_filter).encode();
 
-      for( trigger::size_type i_key=0; i_key<objectKeys.size(); i_key++)
+      if( SavedFilterCondition(filterName) )
       {
-        trigger::size_type objKey = objectKeys.at(i_key);
-        const trigger::TriggerObject& triggerObj(triggerObjects[objKey]);
+        trigger::Keys objectKeys = h_triggerEvent->filterKeys(i_filter);
+        const trigger::TriggerObjectCollection& triggerObjects(h_triggerEvent->getObjects());
 
-        if( isMYHLT )
+        for( trigger::size_type i_key=0; i_key<objectKeys.size(); i_key++)
         {
-          vec_myFilterName_.push_back( filterName );
-          vec_myHLTObj_pt_.push_back( triggerObj.pt() );
-          vec_myHLTObj_eta_.push_back( triggerObj.eta() );
-          vec_myHLTObj_phi_.push_back( triggerObj.phi() );
+          trigger::size_type objKey = objectKeys.at(i_key);
+          const trigger::TriggerObject& triggerObj(triggerObjects[objKey]);
+
+          if( isMYHLT )
+          {
+            vec_myFilterName_.push_back( filterName );
+            vec_myHLTObj_pt_.push_back( triggerObj.pt() );
+            vec_myHLTObj_eta_.push_back( triggerObj.eta() );
+            vec_myHLTObj_phi_.push_back( triggerObj.phi() );
+          }
+          else
+          {
+            vec_filterName_.push_back( filterName );
+            vec_HLTObj_pt_.push_back( triggerObj.pt() );
+            vec_HLTObj_eta_.push_back( triggerObj.eta() );
+            vec_HLTObj_phi_.push_back( triggerObj.phi() );
+          }
         }
-        else
+      } // -- end of if( muon filters )-- //
+    } // -- end of filter iteration -- //
+
+  }
+  else // -- miniAOD case
+  {
+    edm::Handle< std::vector<pat::TriggerObjectStandAlone> > h_triggerObject;
+    iEvent.getByToken(t_triggerObject_miniAOD_, h_triggerObject);
+
+    const edm::TriggerNames names = iEvent.triggerNames(*h_triggerResults);
+    for( pat::TriggerObjectStandAlone triggerObj : *h_triggerObject)
+    {
+      // triggerObj.unpackPathNames(names);
+      triggerObj.unpackNamesAndLabels(iEvent, *h_triggerResults);
+
+      for( size_t i_filter = 0; i_filter < triggerObj.filterLabels().size(); ++i_filter )
+      {
+        // -- Get the full name of i-th filter -- //
+        // std::string fullname = triggerObj.filterLabels()[i_filter];
+
+        // std::string filterName;
+
+        // // -- Find ":" in the full name -- //
+        // size_t m = fullname.find_first_of(':');
+        
+        // // -- if ":" exists in the full name, takes the name before ":" as the filter name -- //
+        // if( m != std::string::npos )
+        //   filterName = fullname.substr(0, m);
+        // else
+        //   filterName = fullname;
+
+        std::string filterName = triggerObj.filterLabels()[i_filter];
+        if( SavedFilterCondition(filterName) )
         {
+          // -- does not support MYHLT for miniAOD for now
           vec_filterName_.push_back( filterName );
           vec_HLTObj_pt_.push_back( triggerObj.pt() );
           vec_HLTObj_eta_.push_back( triggerObj.eta() );
           vec_HLTObj_phi_.push_back( triggerObj.phi() );
+
+          // if( isMYHLT )
+          // {
+          //   vec_myFilterName_.push_back( filterName );
+          //   vec_myHLTObj_pt_.push_back( triggerObj.pt() );
+          //   vec_myHLTObj_eta_.push_back( triggerObj.eta() );
+          //   vec_myHLTObj_phi_.push_back( triggerObj.phi() );
+          // }
+          // else
+          // {
+          //   vec_filterName_.push_back( filterName );
+          //   vec_HLTObj_pt_.push_back( triggerObj.pt() );
+          //   vec_HLTObj_eta_.push_back( triggerObj.eta() );
+          //   vec_HLTObj_phi_.push_back( triggerObj.phi() );
+          // }
         }
-      }
-    } // -- end of if( muon filters )-- //
-  } // -- end of filter iteration -- //
+
+      } // -- loop over filters
+
+    } // -- loop over trigger objects
+
+  } // -- end of miniAOD case
+
 }
 
 bool MuonHLTNtupler::SavedTriggerCondition( std::string& pathName )

@@ -42,6 +42,8 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 
+#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
+
 #include "TTree.h"
 
 using namespace std;
@@ -77,7 +79,10 @@ private:
 
   bool isNewHighPtMuon(const reco::Muon& muon, const reco::Vertex& vtx);
 
-  edm::EDGetTokenT< std::vector<reco::Muon> >                t_offlineMuon_;
+  edm::EDGetTokenT< edm::View<reco::Muon> >                  t_offlineMuon_;
+
+  edm::EDGetTokenT< std::vector<pat::Muon> >                  t_PatMuon_;
+
   edm::EDGetTokenT< reco::VertexCollection >                 t_offlineVertex_;
   edm::EDGetTokenT< edm::TriggerResults >                    t_triggerResults_;
   edm::EDGetTokenT< trigger::TriggerEvent >                  t_triggerEvent_;
@@ -100,6 +105,10 @@ private:
   edm::EDGetTokenT< std::vector<PileupSummaryInfo> >         t_PUSummaryInfo_;
   edm::EDGetTokenT< GenEventInfoProduct >                    t_genEventInfo_;
   edm::EDGetTokenT< reco::GenParticleCollection >            t_genParticle_;
+
+  bool isMiniAOD_;
+  edm::EDGetTokenT< std::vector<pat::TriggerObjectStandAlone> > t_triggerObject_miniAOD_;
+
 
   TTree *ntuple_;
   static const int arrSize_ = 2000;
@@ -229,6 +238,21 @@ private:
   int muon_nMatchedStation_[arrSize_];
   int muon_nMatchedRPCLayer_[arrSize_];
   int muon_stationMask_[arrSize_];
+
+  int muon_simType_[arrSize_];
+  int muon_simExtType_[arrSize_];
+  int muon_simFlavour_[arrSize_];
+  int muon_simHeaviestMotherFlavour_[arrSize_];
+  int muon_simPdgId_[arrSize_];
+  int muon_simMotherPdgId_[arrSize_];
+  int muon_simBX_[arrSize_];
+  int muon_simTpEvent_[arrSize_];
+  float muon_simProdRho_[arrSize_];
+  float muon_simProdZ_[arrSize_];
+  float muon_simPt_[arrSize_];
+  float muon_simEta_[arrSize_];
+  float muon_simPhi_[arrSize_];
+  float muon_simMatchQuality_[arrSize_];
 
   // -- L3 muon
   int nL3Muon_;
