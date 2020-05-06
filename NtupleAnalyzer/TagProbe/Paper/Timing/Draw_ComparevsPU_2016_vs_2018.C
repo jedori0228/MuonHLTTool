@@ -208,7 +208,7 @@ void Draw_ComparevsPU_2016_vs_2018(){
   TLatex latex_info;
   latex_info.SetNDC();
   latex_info.SetTextSize(0.030);
-  latex_info.DrawLatex(0.20, 0.89, "Isolated #mu trigger with p_{T} > 24 GeV");
+  latex_info.DrawLatex(0.20, 0.89, "Isolated single #mu trigger with p_{T} > 24 GeV");
 
   TLegend *lg_IsoMu24 = new TLegend(0.18, 0.72, 0.80, 0.87);
   lg_IsoMu24->SetFillStyle(0);
@@ -219,13 +219,21 @@ void Draw_ComparevsPU_2016_vs_2018(){
   lg_IsoMu24->AddEntry( grs_2018.at(0), "2018, iterative", "lp");
   lg_IsoMu24->Draw();
 
-  //grs_2016.at(0)->Draw("lpsame");
-  //grs_2016.at(1)->Draw("lpsame");
-  gr_IsoMu24_2016->Draw("lpsame");
-  grs_2018.at(0)->Draw("lpsame");
+  //grs_2016.at(0)->Draw("psame");
+  //grs_2016.at(1)->Draw("psame");
+  gr_IsoMu24_2016->Draw("psame");
+  grs_2018.at(0)->Draw("psame");
 
-  gr_IsoMu24_2016->Draw("lpsame");
+  gr_IsoMu24_2016->Draw("psame");
   
+  TLatex latex_year;
+  latex_year.SetNDC();
+  latex_year.SetTextSize(0.035);
+  latex_year.SetTextFont(42);
+  latex_year.DrawLatex(0.61, 0.96, "2016 and 2018, 13 TeV");
+  TLatex latex_CMSPriliminary;
+  latex_CMSPriliminary.DrawLatexNDC(0.16, 0.96, "#font[62]{CMS}#font[42]{#it{#scale[0.8]{ Preliminary}}}");
+
   c_IsoMu24->SaveAs(OutDir+"/IsoMu24.pdf");
   c_IsoMu24->Close();
 
@@ -264,8 +272,8 @@ void Draw_ComparevsPU_2016_vs_2018(){
   grs_2018.at(1)->SetMarkerColor(kBlack);
   grs_2018.at(1)->SetLineColor(kBlack);
 
-  latex_info.DrawLatex(0.20, 0.89, "Nonisolated #mu trigger with p_{T} > 50 GeV");
-  TLegend *lg_Mu50 = new TLegend(0.18, 0.67, 0.68, 0.87);
+  latex_info.DrawLatex(0.20, 0.89, "Non-isolated single #mu trigger with p_{T} > 50 GeV");
+  TLegend *lg_Mu50 = new TLegend(0.18, 0.72, 0.80, 0.87);
   lg_Mu50->SetFillStyle(0);
   lg_Mu50->SetBorderSize(0);
   //lg_Mu50->AddEntry( grs_2016.at(2), "2016, cascade", "lp");
@@ -275,10 +283,16 @@ void Draw_ComparevsPU_2016_vs_2018(){
 
   lg_Mu50->Draw();
 
-  //grs_2016.at(2)->Draw("lpsame");
-  //grs_2016.at(3)->Draw("lpsame");
-  gr_Mu50_2016->Draw("lpsame");
-  grs_2018.at(1)->Draw("lpsame");
+  //grs_2016.at(2)->Draw("psame");
+  //grs_2016.at(3)->Draw("psame");
+  gr_Mu50_2016->Draw("psame");
+  grs_2018.at(1)->Draw("psame");
+
+  latex_year.SetNDC();
+  latex_year.SetTextSize(0.035);
+  latex_year.SetTextFont(42);
+  latex_year.DrawLatex(0.61, 0.96, "2016 and 2018, 13 TeV");
+  latex_CMSPriliminary.DrawLatexNDC(0.16, 0.96, "#font[62]{CMS}#font[42]{#it{#scale[0.8]{ Preliminary}}}");
 
   c_Mu50->SaveAs(OutDir+"/Mu50.pdf");
   c_Mu50->Close();
@@ -371,10 +385,16 @@ void Draw_ComparevsPU_2016_vs_2018(){
   lg_L3MuonReco->AddEntry( gr_L3_2018_Iter, "2018, iterative", "lp");
   lg_L3MuonReco->Draw();
 
-  //gr_L3_2016_Tk->Draw("lpsame");
-  //gr_L3_2016_Cas->Draw("lpsame");
-  gr_L3_2016->Draw("lpsame");
-  gr_L3_2018_Iter->Draw("lpsame");
+  //gr_L3_2016_Tk->Draw("psame");
+  //gr_L3_2016_Cas->Draw("psame");
+  gr_L3_2016->Draw("psame");
+  gr_L3_2018_Iter->Draw("psame");
+
+  latex_year.SetNDC();
+  latex_year.SetTextSize(0.035);
+  latex_year.SetTextFont(42);
+  latex_year.DrawLatex(0.61, 0.96, "2016 and 2018, 13 TeV");
+  latex_CMSPriliminary.DrawLatexNDC(0.16, 0.96, "#font[62]{CMS}#font[42]{#it{#scale[0.8]{ Preliminary}}}");
 
   c_L3MuonReco->SaveAs(OutDir+"/L3MuonReco.pdf");
   c_L3MuonReco->Close();

@@ -42,7 +42,8 @@ void Draw_ComparevsPU_2016_vs_2018_EachSuqeunce(){
   gSystem->mkdir(OutDir,kTRUE);
 
   double x[3] = {
-    0.5, 1.5, 2.5,
+    //0.5, 1.5, 2.5,
+    1., 2., 3.,
   };
 
   double y_2016_Cascade[3] = {
@@ -59,27 +60,27 @@ void Draw_ComparevsPU_2016_vs_2018_EachSuqeunce(){
 
   double y_2016_Sum[3] = {
 0.924856805825,
-1.85464700885,
-0.380858358511,
+0.924856805825+1.85464700885,
+0.924856805825+1.85464700885+0.380858358511,
   };
+//==== change it so cumulative
+
 
   //double y_2016_Sum[3];
   //for(int i=0; i<3; i++) y_2016_Sum[i] = y_2016_Cascade[i]+y_2016_Tracker[i];
 
   double y_2018_Iter[3] = {
 0.94802518317,
-10.3732302036,
-1.02863800582,
+0.94802518317+10.3732302036,
+0.94802518317+10.3732302036+1.02863800582,
   };
 
   double y_2018_IterNoDoublet[3] = {
 0.962889545597,
-6.99539826348,
-1.0304400072,
+0.962889545597+6.99539826348,
+0.962889545597+6.99539826348+1.0304400072,
   };
 
-  TGraph *gr_2016_Cascade = new TGraph(3, x, y_2016_Cascade);
-  TGraph *gr_2016_Tracker = new TGraph(3, x, y_2016_Tracker);
   TGraph *gr_2016_Sum = new TGraph(3, x, y_2016_Sum);
   TGraph *gr_2018_Iter = new TGraph(3, x, y_2018_Iter);
   TGraph *gr_2018_IterNoDoublet = new TGraph(3, x, y_2018_IterNoDoublet);
@@ -90,7 +91,7 @@ void Draw_ComparevsPU_2016_vs_2018_EachSuqeunce(){
 
   TH1D *hist_dummy = new TH1D("hist_dummy", "", 10, 0., 10.);
   hist_axis(hist_dummy);
-  hist_dummy->GetYaxis()->SetTitle("Average CPU time [ms]");
+  hist_dummy->GetYaxis()->SetTitle("Cumulative CPU time [ms]");
   hist_dummy->GetXaxis()->SetTitle("#mu trigger step");
   hist_dummy->GetXaxis()->SetRangeUser(0,3);
   hist_dummy->Draw("histaxis");
@@ -99,45 +100,55 @@ void Draw_ComparevsPU_2016_vs_2018_EachSuqeunce(){
   hist_dummy->GetXaxis()->SetBinLabel(2, "L3");
   hist_dummy->GetXaxis()->SetBinLabel(3, "Isolation");
 
-  //=== 2016, Cascade
-  gr_2016_Cascade->SetMarkerStyle(20);
-  gr_2016_Cascade->SetMarkerColor(kGreen);
-  gr_2016_Cascade->SetLineColor(kGreen);
-  //=== 2016, Tracker
-  gr_2016_Tracker->SetMarkerStyle(21);
-  gr_2016_Tracker->SetMarkerColor(kRed);
-  gr_2016_Tracker->SetLineColor(kRed);
+  TLatex latex_year;
+  latex_year.SetNDC();
+  latex_year.SetTextSize(0.035);
+  latex_year.SetTextFont(42);
+  latex_year.DrawLatex(0.61, 0.96, "2016 and 2018, 13 TeV");
 
-  //=== 2016, Sum
-  gr_2016_Sum->SetMarkerStyle(20);
-  gr_2016_Sum->SetMarkerColor(kBlue);
-  gr_2016_Sum->SetLineColor(kBlue);
+  TLatex latex_CMSPriliminary;
+  latex_CMSPriliminary.DrawLatexNDC(0.16, 0.96, "#font[62]{CMS}#font[42]{#it{#scale[0.8]{ Preliminary}}}");
+
+  TH1D *hist_2016_Sum = new TH1D("hist_2016_Sum", "", 3, 0., 3.);
+  TH1D *hist_2018_Iter = new TH1D("hist_2018_Iter", "", 3, 0., 3.);
+  TH1D *hist_2018_IterNoDoublet = new TH1D("hist_2018_IterNoDoublet", "", 3, 0., 3.);
+  for(int i=1; i<=3; i++){
+    hist_2016_Sum->SetBinContent(i, y_2016_Sum[i-1]);
+    hist_2018_Iter->SetBinContent(i, y_2018_Iter[i-1]);
+    hist_2018_IterNoDoublet->SetBinContent(i, y_2018_IterNoDoublet[i-1]);
+  }
+
+  int lineWidth=2;
+
+  //==== 2016, Sum
+  hist_2016_Sum->SetMarkerStyle(20);
+  hist_2016_Sum->SetMarkerColor(kBlue);
+  hist_2016_Sum->SetLineColor(kBlue);
+  hist_2016_Sum->SetLineWidth(lineWidth);
   //==== 2018, Iter
-  gr_2018_Iter->SetMarkerStyle(22);
-  gr_2018_Iter->SetMarkerColor(kBlack);
-  gr_2018_Iter->SetLineColor(kBlack);
+  hist_2018_Iter->SetMarkerStyle(22);
+  hist_2018_Iter->SetMarkerColor(kBlack);
+  hist_2018_Iter->SetLineColor(kBlack);
+  hist_2018_Iter->SetLineWidth(lineWidth);
   //==== 2018, IterNoDoublet
-  gr_2018_IterNoDoublet->SetMarkerStyle(25);
-  gr_2018_IterNoDoublet->SetMarkerColor(kViolet);
-  gr_2018_IterNoDoublet->SetLineColor(kViolet);
+  hist_2018_IterNoDoublet->SetMarkerStyle(25);
+  hist_2018_IterNoDoublet->SetMarkerColor(kViolet);
+  hist_2018_IterNoDoublet->SetLineColor(kViolet);
+  hist_2018_IterNoDoublet->SetLineWidth(lineWidth);
 
-  //latex_info.DrawLatex(0.20, 0.89, "L3 sequence");
-  TLegend *lg = new TLegend(0.20, 0.67, 0.90, 0.87);
+  TLegend *lg = new TLegend(0.20, 0.69, 0.95, 0.90);
+  lg->SetMargin(0.15);
   lg->SetFillStyle(0);
   lg->SetBorderSize(0);
 
-  //lg->AddEntry( gr_2016_Cascade,  "2016, cascade (45 < pileup < 50)", "lp");
-  //lg->AddEntry( gr_2016_Tracker,  "2016, tracker muon (45 < pileup < 50)", "lp");
-  lg->AddEntry( gr_2016_Sum, "2016, cascade and tracker muon (45 < pileup < 50)", "lp");
-  lg->AddEntry( gr_2018_Iter, "2018, iterative (46 < pileup < 48)", "lp");
-  lg->AddEntry( gr_2018_IterNoDoublet, "2018, iterative w/o doublet iteration (46 < pileup < 48)", "lp");
+  lg->AddEntry( hist_2016_Sum, "2016, cascade and tracker muon (45 < pileup < 50)", "lp");
+  lg->AddEntry( hist_2018_Iter, "2018, iterative (46 < pileup < 48)", "lp");
+  lg->AddEntry( hist_2018_IterNoDoublet, "2018, iterative w/o doublet iteration (46 < pileup < 48)", "lp");
   lg->Draw();
 
-  //gr_2016_Cascade->Draw("lpsame");
-  //gr_2016_Tracker->Draw("lpsame");
-  gr_2016_Sum->Draw("lpsame");
-  gr_2018_Iter->Draw("lpsame");
-  gr_2018_IterNoDoublet->Draw("lpsame");
+  hist_2016_Sum->Draw("histsame");
+  hist_2018_Iter->Draw("histsame");
+  hist_2018_IterNoDoublet->Draw("histsame");
 
   c->SaveAs(OutDir+"/L1L2L3Iso.pdf");
   c->Close();

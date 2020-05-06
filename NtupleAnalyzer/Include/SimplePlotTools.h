@@ -287,6 +287,7 @@ struct GraphInfo
   TGraphAsymmErrors* g;
   TString legend;
   Int_t color;
+  Style_t style;
 };
 
 struct LatexInfo
@@ -1001,9 +1002,9 @@ public:
     isLogY_ = isLogY;
   }
 
-  void Register( TGraphAsymmErrors* g, TString legend, Int_t color  )
+  void Register( TGraphAsymmErrors* g, TString legend, Int_t color, Style_t style=0  )
   {
-    GraphInfo graphInfo{ (TGraphAsymmErrors*)g->Clone(), legend, color };
+    GraphInfo graphInfo{ (TGraphAsymmErrors*)g->Clone(), legend, color, style };
     graphInfos_.push_back( graphInfo );
   }
 
@@ -1026,11 +1027,12 @@ public:
       TGraphAsymmErrors*& g = graphInfos_[i].g;
       TString legendName = graphInfos_[i].legend;
       Int_t color = graphInfos_[i].color;
+      Style_t style = graphInfos_[i].style;
 
       if( i == 0) g->Draw("A"+drawOp);
       else        g->Draw(drawOp);
 
-      g->SetMarkerStyle(20);
+      g->SetMarkerStyle(style);
       g->SetMarkerColor(color);
       g->SetMarkerSize(1.3);
 
@@ -1096,11 +1098,12 @@ public:
       TGraphAsymmErrors*& g = graphInfos_[i].g;
       TString legendName = graphInfos_[i].legend;
       Int_t color = graphInfos_[i].color;
+      Style_t style = graphInfos_[i].style;
 
       if( i == 0) g->Draw("A"+drawOp);
       else        g->Draw(drawOp);
 
-      g->SetMarkerStyle(20);
+      g->SetMarkerStyle(style);
       g->SetMarkerColor(color);
       g->SetMarkerSize(1.3);
 

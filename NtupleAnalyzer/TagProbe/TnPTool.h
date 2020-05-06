@@ -329,9 +329,16 @@ public:
     maxMass_ = max;
   }
 
-  TGraphAsymmErrors* CalcTnPEff_CutAndCount( TString varName )
+  TGraphAsymmErrors* CalcTnPEff_CutAndCount( TString varName, int FirstBinIndexFor2D=-1, int FirstBinXIndexFor2D=-1 )
   {
-    TH1D* hEffTemp = PlotTool::Get_Hist( inputFileName_, "hEffTemplate"+varName, "hEff"+varName);
+
+    TH1D* hEffTemp;
+    if(FirstBinIndexFor2D<0){
+      hEffTemp = PlotTool::Get_Hist( inputFileName_, "hEffTemplate"+varName, "hEff"+varName);
+    }
+    else{
+      hEffTemp = PlotTool::Get_Hist( inputFileName_, "hEffTemplatePhi", "hEff"+varName);
+    }
     Int_t nBin = hEffTemp->GetNbinsX();
 
     vector< TH1D* > vec_passHist;
@@ -342,6 +349,8 @@ public:
     for(Int_t i=0; i<nBin; i++)
     {
       TString binInfo = TString::Format("%02dbin", i);
+
+      if(FirstBinIndexFor2D>=0) binInfo = TString::Format("%02dbin_%02d_%02d", FirstBinIndexFor2D+i,FirstBinXIndexFor2D,i);
 
       TString histNamePass = histNameBase + "Pass_" + binInfo;
       TH1D* hTempPass = PlotTool::Get_Hist( inputFileName_, histNamePass );

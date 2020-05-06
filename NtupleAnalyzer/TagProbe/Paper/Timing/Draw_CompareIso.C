@@ -55,6 +55,7 @@ void Draw_CompareIso(){
     "HLT_IsoMu24_v4",
     "HLT_IsoTkMu24_v4",
     "HLT_IsoMu24_v13",
+    //"HLT_OldMu100_v3",
   };
   vector<Color_t> colors = {
   kBlack,
